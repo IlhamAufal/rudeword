@@ -1,8 +1,7 @@
 import streamlit as st
-from importnb import Notebook
-
-with Notebook():
-    import ini_asli as rd
+import sys
+sys.path.append('ini_asli.ipynb')
+from ini_asli import execute
 
 st.title("Rude Word Replacement")
 
@@ -14,7 +13,7 @@ with col1:
 with col2:
     if st.button('Apply'):
         try:
-            result = rd.execute(footage)
+            result = execute(footage)
             st.success(result)
         except Exception as e:
             st.error(f"An error occurred: {e}")
