@@ -1,13 +1,11 @@
 import streamlit as st
-import ini_asli as rd  # Pastikan ini_asli.py ada di direktori yang sama
+import ini_asli.ipynb as rd
 
 st.title("Rude Word Replacement")
 
-# Membuat dua kolom
 col1, col2 = st.columns(2)
 
 with col1:
-    # Input teks dari pengguna
     footage = st.text_input('Input paragraph')
 
 with col2:
