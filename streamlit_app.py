@@ -1,5 +1,8 @@
 import streamlit as st
-import ini_asli.ipynb as rd
+from importnb import Notebook
+
+with Notebook():
+    import ini_asli as rd
 
 st.title("Rude Word Replacement")
 
