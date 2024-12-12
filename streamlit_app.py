@@ -1,7 +1,8 @@
 import streamlit as st
-import sys
-sys.path.append('ini_asli.ipynb')
-from ini_asli import execute
+import dill
+
+with open('execute_function.sav', 'rb') as file:
+    execute = dill.load(file)
 
 st.title("Rude Word Replacement")
 
