@@ -1,7 +1,6 @@
 import streamlit as st
 import dill
 
-clean_data = dill.load(open('saveFile/clean_data.sav', 'rb'))
 normalize = dill.load(open('saveFile/normalize.sav', 'rb'))
 stemming = dill.load(open('saveFile/stemming.sav', 'rb'))
 translate_id = dill.load(open('saveFile/translate_id.sav', 'rb'))
@@ -35,12 +34,23 @@ with col1:
     
     if st.button('Apply'):
         if footage:
-            result = f"Processed: {footage}"
-            sentiment_result = "positif"
+            normalized_text = normalize(footage)
+            stemmed_text = stemming(normalized_text)
+            translated_text = translate_id(stemmed_text)
+            sentiment_result = prediksi_sentimen(translated_text)
+            
+            if sentiment_result != "positif":
+                final_text = replace_kata_kasar(stemmed_text)
+            else:
+                final_text = stemmed_text
             
             setattr(project_form, 'input_text', footage)
             setattr(project_form, 'sentiment_result', sentiment_result)
-            setattr(project_form, 'final_text', result)
+            setattr(project_form, 'final_text', final_text)
+            result = final_text
+        else:
+            result = "Please input words first!"
+            sentiment_result = ""
 
 with col2:
     st.subheader('Result')
