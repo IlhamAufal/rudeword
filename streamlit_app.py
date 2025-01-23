@@ -1,12 +1,12 @@
 import streamlit as st
 import dill
 
-normalize = dill.load(open('normalize.sav', 'rb'))
-stemming = dill.load(open('stemming.sav', 'rb'))
-translate_id = dill.load(open('translate_id.sav', 'rb'))
-replace_kata_kasar = dill.load(open('replace_kata_kasar.sav', 'rb'))
-tfidf_vectorizer = dill.load(open('tfidf_vectorizer.sav', 'rb'))
-model_naive_bayes = dill.load(open('model_naive_bayes.sav', 'rb'))
+normalize = dill.load(open('saveFile/normalize.sav', 'rb'))
+stemming = dill.load(open('saveFile/stemming.sav', 'rb'))
+translate_id = dill.load(open('saveFile/translate_id.sav', 'rb'))
+replace_kata_kasar = dill.load(open('saveFile/replace_kata_kasar.sav', 'rb'))
+tfidf_vectorizer = dill.load(open('saveFile/tfidf_vectorizer.sav', 'rb'))
+model_naive_bayes = dill.load(open('saveFile/model_naive_bayes.sav', 'rb'))
 
 def prediksi_sentimen(text):
     teksBaru = tfidf_vectorizer.transform([text])
