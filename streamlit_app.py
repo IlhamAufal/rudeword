@@ -1,6 +1,7 @@
 import streamlit as st
 import dill
 
+clean_data = dill.load(open('saveFile/clean_data.sav', 'rb'))
 normalize = dill.load(open('saveFile/normalize.sav', 'rb'))
 stemming = dill.load(open('saveFile/stemming.sav', 'rb'))
 translate_id = dill.load(open('saveFile/translate_id.sav', 'rb'))
