@@ -2,7 +2,6 @@ import streamlit as st
 import dill
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from translate import Translator
-import re
 
 clean_data = dill.load(open('saveFile/clean_data.sav', 'rb'))
 normalize = dill.load(open('saveFile/normalize.sav', 'rb'))
