@@ -1,12 +1,64 @@
 import streamlit as st
+import json
 import dill
 
-normalize = dill.load(open('saveFile/normalize.sav', 'rb'))
-stemming = dill.load(open('saveFile/stemming.sav', 'rb'))
-translate_id = dill.load(open('saveFile/translate_id.sav', 'rb'))
-replace_kata_kasar = dill.load(open('saveFile/replace_kata_kasar.sav', 'rb'))
+# normalize = dill.load(open('saveFile/normalize.sav', 'rb'))
+# stemming = dill.load(open('saveFile/stemming.sav', 'rb'))
+# translate_id = dill.load(open('saveFile/translate_id.sav', 'rb'))
+# replace_kata_kasar = dill.load(open('saveFile/replace_kata_kasar.sav', 'rb'))
 tfidf_vectorizer = dill.load(open('saveFile/tfidf_vectorizer.sav', 'rb'))
 model_naive_bayes = dill.load(open('saveFile/model_naive_bayes.sav', 'rb'))
+
+def clean_data(text):
+    import re
+    text = re.sub(r'@[A-Za-z0-9_]+', '', text)
+    text = re.sub(r'#\w+', '', text)
+    text = re.sub(r'https?://\S+|www\.\S+', '', text)
+    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+def load_normalization_dict():
+    with open('normalization_dict.json', 'r') as file:
+        normalization_dict = json.load(file)
+    return normalization_dict
+
+def normalize(text):
+    import re, json
+    def load_normalization_dict():
+        with open('normalization_dict.json', 'r') as file:
+            normalization_dict = json.load(file)
+        return normalization_dict
+    normalization_dict = load_normalization_dict()
+    for word, replacement in normalization_dict.items():
+        pattern = r'\b' + re.escape(word) + r'\b'
+        text = re.sub(pattern, replacement, text)
+    return text
+
+def stemming(text_cleaning):
+    from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+    factory = StemmerFactory()
+    stemmer = factory.create_stemmer()
+    return stemmer.stem(text_cleaning)
+
+def translate_id(text):
+    from googletrans import Translator
+    try:
+        translator = Translator(from_lang='en', to_lang="id" )
+        translation = translator.translate(text)
+        return translation
+    except Exception as e:
+        print(f"Error in translation: {e}")
+        return text
+
+def replace_kata_kasar(text):
+    import json
+    with open('kamus_kasar.json', 'r') as file:
+        kamus = json.load(file)
+    kata_kasar = set(kamus.keys())
+    words = text.split()
+    word_replacement = [kamus[key] if key in kata_kasar else key for key in words]
+    return ' '.join(word_replacement)
 
 def prediksi_sentimen(text):
     teksBaru = tfidf_vectorizer.transform([text])
