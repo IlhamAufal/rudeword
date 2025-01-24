@@ -4,3 +4,4 @@ streamlit
 scikit-learn
 pip==24.3.1
 dill==0.3.6
+Sastrawi==1.0.1
