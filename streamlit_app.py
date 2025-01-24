@@ -1,5 +1,4 @@
 import streamlit as st
-import Sastrawi
 import json
 import dill
 
